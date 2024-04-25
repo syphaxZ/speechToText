@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 import os
+import whisper 
 
+model = whisper.load_model("medium")
 app = Flask(__name__, template_folder='templates')
 
 # Dossier pour stocker les fichiers audio
@@ -43,7 +45,7 @@ def transcribe_audio():
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     
     # Here you should call your transcription model, e.g.,
-    transcription = your_transcription_function(filepath)  # Replace with your model call
+    transcription  = model.transcribe(filepath)  # Replace with your model call
     
     return jsonify({'transcription': transcription})
 
