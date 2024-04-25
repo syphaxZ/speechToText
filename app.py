@@ -26,17 +26,30 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
-        return jsonify({'error': 'Aucun fichier trouvé'})
+        return jsonify({'error': 'No file found'}), 400
+    
     file = request.files['file']
     if file.filename == '':
-        return jsonify({'error': 'Aucun fichier sélectionné'})
+        return jsonify({'error': 'No file selected'}), 400
+    
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
-        return jsonify({'message': 'Fichier téléchargé avec succès', 'filename': filename})
+        upload_path = os.path.join(app.config['UPLOAD_FOLDER'])
+        
+        # Ensure the upload directory exists
+        os.makedirs(upload_path, exist_ok=True)
+        
+        filepath = os.path.join(upload_path, filename)
+        
+        try:
+            file.save(filepath)
+        except Exception as e:
+            app.logger.error(f'Failed to save file: {e}')
+            return jsonify({'error': 'Failed to save file'}), 500
+        
+        return jsonify({'message': 'File uploaded successfully', 'filename': filename}), 200
     else:
-        return jsonify({'error': 'Format de fichier non pris en charge'})
+        return jsonify({'error': 'Unsupported file format'}), 400
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe_audio():
