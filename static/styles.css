@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #dd7474;
+}
+
+header {
+  
+  background-color: #333;
+  padding: 10px;
+  position: relative; /* Rend le header fixe */
+  width: 100%;  /*Assurez-vous qu'il occupe toute la largeur de la fenêtre */
+  top: 0;  /*Positionne le header en haut de la fenêtre */
+  z-index: 1;
+}
+
+.logo {
+    position: relative; /* Assurez-vous que le positionnement est défini sur relative ou absolu */
+    z-index: 999;
+    width: 50px; /* Définissez la largeur souhaitée */
+    height: auto;
+}
+
+.container {
+  width: 80%;
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+  color: #333;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+audio, button, input {
+  margin: 10px 0;
+}
+
+#transcription {
+  border: 1px solid #ccc;
+  min-height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#delete {
+  background-color: #dc3545;
+}
+
+#delete:hover {
+  background-color: #bd2130;
+}
+.delete {
+  background-color: #dc3545;
+  margin-top: 10px;
+}
+
+.delete:hover {
+  background-color: #bd2130;
+}
+
+/* Add a little space between sections for better readability */
+section {
+  margin-bottom: 20px;
+}
