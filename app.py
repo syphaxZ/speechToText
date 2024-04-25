@@ -3,6 +3,13 @@ from werkzeug.utils import secure_filename
 import os
 import whisper 
 
+import librosa
+import librosa.display
+import numpy as np
+import matplotlib.pyplot as plt
+import soundfile as sf
+
+
 model = whisper.load_model("medium")
 print("modele uploded!")
 app = Flask(__name__, template_folder='templates')
@@ -83,6 +90,9 @@ def transcribe_audio():
     filename = data['filename']
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     print(filepath)
+
+    
+    print("Fichier audio filtré enregistré au format WAV avec succès.")
     transcription  = model.transcribe(filepath)  
     result = transcription["text"]
     print(result)
