@@ -4,6 +4,7 @@ import os
 import whisper 
 
 model = whisper.load_model("medium")
+print("modele uploded!")
 app = Flask(__name__, template_folder='templates')
 
 # Dossier pour stocker les fichiers audio
@@ -57,10 +58,10 @@ def transcribe_audio():
     filename = data['filename']
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     
-    # Here you should call your transcription model, e.g.,
-    transcription  = model.transcribe(filepath)  # Replace with your model call
-    
-    return jsonify({'transcription': transcription})
+    transcription  = model.transcribe(filepath)  
+    result = transcription["text"]
+    print(result)
+    return jsonify({'transcription': result})
 
 if __name__ == '__main__':
     app.run(debug=True)
