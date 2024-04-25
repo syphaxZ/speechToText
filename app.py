@@ -51,13 +51,38 @@ def upload_file():
         return jsonify({'message': 'File uploaded successfully', 'filename': filename}), 200
     else:
         return jsonify({'error': 'Unsupported file format'}), 400
+    
+"""
+@app.route('/transcribe', methods=['POST'])
+def transcribe_audio():
+    # Vérifier si le fichier est présent dans la requête
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
 
+    file = request.files['file']
+
+    # Si l'utilisateur ne sélectionne pas de fichier, le navigateur
+    # soumettra également un champ input vide sans nom de fichier
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if file:
+        # Vous pouvez maintenant utiliser ce fichier directement pour le traitement
+        # Ici nous lisons simplement le fichier audio
+        # Assurez-vous que votre serveur accepte et peut traiter le format de fichier spécifique
+        data, samplerate = sf.read(file.stream)
+        # Ici, vous appelleriez votre fonction de transcription
+        # result = model.transcribe(data, samplerate)
+
+        # Réponse fictive pour l'exemple
+        return jsonify({"status": "succès", "data": "transcription here"}), 200
+"""
 @app.route('/transcribe', methods=['POST'])
 def transcribe_audio():
     data = request.get_json()
     filename = data['filename']
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    
+    print(filepath)
     transcription  = model.transcribe(filepath)  
     result = transcription["text"]
     print(result)

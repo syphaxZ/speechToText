@@ -34,6 +34,52 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.getElementById('upload').addEventListener('click', function() {
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+    var formData = new FormData();
+    formData.append('file', file);
+
+    // Step 1: Upload the file
+    fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.filename) {
+            // Step 2: Retrieve the filename from the upload response
+            var filename = data.filename;
+            
+            // Step 3: Request transcription using the filename
+            fetch('/transcribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ filename: filename })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Transcription error:', data.error);
+                } else {
+                    console.log('Transcription successful:', data.transcription);
+                    document.getElementById('result').textContent = data.transcription; // Display the result
+                }
+            })
+            .catch(error => {
+                console.error('Transcription error:', error);
+            });
+        } else {
+            console.error('Upload error:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Upload error:', error);
+    });
+});
+/*
+document.getElementById('upload').addEventListener('click', function() {
     var formData = new FormData();
     // Supposons que vous avez un input de type file pour uploader le fichier audio
     var fileInput = document.getElementById('fileInput');
@@ -57,7 +103,7 @@ document.getElementById('upload').addEventListener('click', function() {
         console.error('Erreur:', error);
     });
 });
-
+*/
 document.querySelectorAll('.delete').forEach(button => {
     button.addEventListener('click', () => {
         const transcriptionDiv = button.previousElementSibling; // Sélectionner le div précédent le bouton
